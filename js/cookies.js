@@ -6,30 +6,46 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!container) return;
     if (localStorage.getItem(consentKey)) return;
 
-    // Render Cookie Banner - Monochrome
+    // Check if mobile
+    const isMobile = window.innerWidth <= 768;
+
+    // Render Cookie Banner - Responsive
     container.innerHTML = `
-        <div style="
+        <div class="cookie-popup" style="
             position: fixed;
-            bottom: 1.5rem;
+            bottom: ${isMobile ? '1rem' : '1.5rem'};
             left: 50%;
             transform: translateX(-50%);
             background: #161616;
-            padding: 1.25rem 1.75rem;
+            padding: ${isMobile ? '1.25rem' : '1.25rem 1.75rem'};
             border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 100px;
+            border-radius: ${isMobile ? '20px' : '100px'};
             z-index: 9999;
             display: flex;
+            flex-direction: ${isMobile ? 'column' : 'row'};
             align-items: center;
-            gap: 1.5rem;
+            gap: ${isMobile ? '1rem' : '1.5rem'};
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
             font-family: 'Plus Jakarta Sans', sans-serif;
-            max-width: 90%;
+            width: ${isMobile ? 'calc(100% - 2rem)' : 'auto'};
+            max-width: ${isMobile ? '400px' : '90%'};
+            text-align: ${isMobile ? 'center' : 'left'};
         ">
-            <p style="color: #a0a0a0; margin: 0; font-size: 0.9rem; white-space: nowrap;">
+            <p style="
+                color: #a0a0a0; 
+                margin: 0; 
+                font-size: ${isMobile ? '0.85rem' : '0.9rem'}; 
+                line-height: 1.5;
+            ">
                 We use cookies for a better experience.
                 <a href="pages/privacy.html" style="color: #fff; margin-left: 0.25rem; text-decoration: underline;">Learn more</a>
             </p>
-            <div style="display: flex; gap: 0.75rem;">
+            <div style="
+                display: flex; 
+                gap: 0.75rem;
+                width: ${isMobile ? '100%' : 'auto'};
+                flex-shrink: 0;
+            ">
                 <button id="acceptCookies" style="
                     background: #fff;
                     color: #0a0a0a;
@@ -41,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     font-size: 0.85rem;
                     font-family: inherit;
                     transition: background 0.2s;
+                    flex: ${isMobile ? '1' : 'none'};
                 ">Accept</button>
                 <button id="declineCookies" style="
                     background: transparent;
@@ -52,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     font-size: 0.85rem;
                     font-family: inherit;
                     transition: border-color 0.2s;
+                    flex: ${isMobile ? '1' : 'none'};
                 ">Decline</button>
             </div>
         </div>
