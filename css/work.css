@@ -1,0 +1,357 @@
+/* ===================================
+   CSS Variables & Theme
+   =================================== */
+:root {
+    --bg: #0a0a0a;
+    --bg-card: #111;
+    --text: #ffffff;
+    --text-secondary: #888;
+    --text-muted: #555;
+    --border: rgba(255,255,255,0.08);
+    --font: 'Plus Jakarta Sans', sans-serif;
+    
+    /* Project Colors */
+    --project-1: #1a1a2e;
+    --project-2: #16213e;
+    --project-3: #1f3a3d;
+    --project-4: #2d2d2d;
+
+    /* ----- Γέφυρα μεταβλητών για το Footer ----- */
+    --bg-primary: var(--bg);
+    --bg-tertiary: #161616;
+    --border-color: var(--border);
+    --text-primary: var(--text);
+    --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* ===================================
+   Reset & Base Styles
+   =================================== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    cursor: crosshair;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* ===================================
+   Preloader
+   =================================== */
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0a0a0a;
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.preloader.finished {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.loader-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    width: 100%;
+    max-width: 800px;
+    padding: 0 2rem;
+}
+
+.loader-counter {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1;
+    min-width: 120px;
+    text-align: center;
+    font-feature-settings: "tnum";
+}
+
+.loader-line {
+    flex: 1;
+    height: 1px;
+    background: #888;
+    opacity: 0.3;
+    transform-origin: center;
+    animation: expandLine 1.5s ease-out forwards;
+}
+
+@keyframes expandLine {
+    from { transform: scaleX(0); opacity: 0; }
+    to { transform: scaleX(1); opacity: 0.9; }
+}
+
+body.loading {
+    overflow: hidden;
+}
+
+/* ===================================
+   Navigation
+   =================================== */
+.nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    padding: 1.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    background: rgba(10,10,10,0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+}
+
+.nav-back {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.nav-back:hover { color: var(--text); }
+.nav-back svg { width: 18px; height: 18px; }
+
+/* ===================================
+   Page Header
+   =================================== */
+.page-header {
+    padding: 10rem 3rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.page-title {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+}
+
+.page-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    max-width: 500px;
+}
+
+/* ===================================
+   Asymmetric Projects Grid
+   =================================== */
+.projects-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 3rem 6rem;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2rem;
+    row-gap: 4rem;
+}
+
+/* Project Card Base */
+.project {
+    position: relative;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: fadeUp 0.8s ease forwards;
+}
+
+.project:nth-child(1) { animation-delay: 0.1s; }
+.project:nth-child(2) { animation-delay: 0.2s; }
+.project:nth-child(3) { animation-delay: 0.3s; }
+.project:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Asymmetric Positioning */
+.project--large { grid-column: 1 / 8; }
+.project--medium { grid-column: 8 / 13; margin-top: 6rem; }
+.project--wide { grid-column: 3 / 11; }
+.project--offset-right { grid-column: 6 / 13; }
+
+/* Card Styling */
+.project-card {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255,255,255,0.15);
+}
+
+/* Image Container with varying aspect ratios */
+.project-image {
+    position: relative;
+    overflow: hidden;
+    background: #161616;
+}
+
+.project--large .project-image { aspect-ratio: 16 / 10; }
+.project--medium .project-image { aspect-ratio: 4 / 5; }
+.project--wide .project-image { aspect-ratio: 21 / 9; }
+.project--offset-right .project-image { aspect-ratio: 16 / 9; }
+
+/* Project Solid Colors */
+.project-color--1 { background: var(--project-1); }
+.project-color--2 { background: var(--project-2); }
+.project-color--3 { background: var(--project-3); }
+.project-color--4 { background: var(--project-4); }
+
+.project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-card:hover .project-image img {
+    transform: scale(1.05);
+}
+
+.project-card:hover .project-image {
+    filter: brightness(1.15);
+}
+
+/* Overlay */
+.project-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.project-card:hover .project-overlay { opacity: 1; }
+
+.project-cta {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    padding: 0.6rem 1.2rem;
+    background: #fff;
+    color: #000;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 100px;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.4s ease 0.1s;
+}
+
+.project-card:hover .project-cta {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.project-cta.disabled {
+    background: #333;
+    color: #888;
+}
+
+/* Project Info */
+.project-info {
+    padding: 1.5rem;
+}
+
+.project-number {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.project-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.project-tags span {
+    padding: 0.35rem 0.75rem;
+    background: rgba(255,255,255,0.05);
+    border-radius: 100px;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Decorative Elements */
+.deco-line {
+    position: fixed;
+    width: 1px;
+    height: 100vh;
+    background: var(--border);
+    top: 0;
+}
+
+.deco-line--left { left: 25%; }
+.deco-line--right { right: 25%; }
+
+/* ===================================
+   Mobile Overrides
+   =================================== */
+@media (max-width: 900px) {
+    .nav { padding: 1rem 1.5rem; }
+    .page-header { padding: 8rem 1.5rem 3rem; }
+    .page-title { font-size: 2.5rem; }
+    .projects-container { padding: 1rem 1.5rem 4rem; }
+    
+    .projects-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .project--medium { margin-top: 0; }
+    .project-image { aspect-ratio: 16 / 10 !important; }
+    
+    .deco-line { display: none; }
+}
+/* Κρατάει τον σταυρό ακόμα και όταν το ποντίκι είναι πάνω από links/buttons */
+a, button, .btn, .project-card, .hover-text span {
+    cursor: crosshair !important;
+}

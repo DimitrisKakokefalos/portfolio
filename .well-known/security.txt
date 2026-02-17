@@ -1,0 +1,10 @@
+# Security Contact Information
+# https://securitytxt.org/
+
+Contact: mailto:dimitriskakokefalos@gmail.com
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: en, el
+Canonical: https://dimitriskakokefalos.com/.well-known/security.txt
+
+# If you find a security vulnerability, please report it responsibly.
+# I appreciate your help in keeping this site secure.

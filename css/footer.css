@@ -1,0 +1,258 @@
+/* ===================================
+   Dynamic & Interactive Footer
+   =================================== */
+.footer {
+    border-top: 1px solid var(--border-color);
+    padding: 6rem 0 2rem 0 !important;
+    background-color: var(--bg-primary);
+    overflow: hidden;
+    text-align: center; /* Κεντράρει τα πάντα από προεπιλογή */
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(1.5rem, 5vw, 3rem);
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}
+
+/* --- Contacts Layout (Centered) --- */
+.footer-content-grid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: clamp(4rem, 10vw, 10rem); /* Μεγάλη απόσταση μεταξύ των 2 στηλών */
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.footer-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Κεντράρει τα περιεχόμενα της στήλης */
+}
+
+.footer-heading {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    font-family: var(--font-mono);
+}
+
+.footer-links-list, .footer-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.05rem;
+}
+
+.footer-content-grid a, .footer-content-grid p {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    margin: 0;
+}
+
+.footer-content-grid a:hover {
+    color: var(--text-primary);
+}
+
+/* Underline Hover Effect (Ανοίγει από το κέντρο) */
+.hover-underline {
+    position: relative;
+    width: fit-content;
+}
+
+.hover-underline::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%); /* Τοποθετεί τη γραμμή ακριβώς στη μέση */
+    background-color: var(--text-primary);
+    transition: width 0.3s ease;
+}
+
+.hover-underline:hover::after {
+    width: 100%;
+}
+
+/* --- Bottom Legal (Centered) --- */
+.footer-bottom {
+    display: flex;
+    flex-direction: column; /* Στοιβάζει το copyright και τα links το ένα κάτω από το άλλο */
+    align-items: center;
+    gap: 1rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-family: var(--font-mono);
+}
+
+.footer-legal {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.footer-legal a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.footer-legal a:hover {
+    color: var(--text-secondary);
+}
+
+/* --- Hero Text (THANK YOU - Moved to bottom) --- */
+.footer-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 2rem; /* Δίνει λίγο χώρο από το legal κομμάτι */
+}
+
+.hover-text {
+    font-size: clamp(3.5rem, 12vw, 9rem);
+    font-weight: 800;
+    line-height: 1;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    cursor: crosshair;
+}
+
+.hover-text span {
+    display: inline-block;
+    transition: all 0.15s ease;
+    color: var(--text-primary);
+}
+
+.hover-text .space {
+    width: clamp(1rem, 3vw, 2rem);
+}
+
+/* The Magic Hover Effects */
+.hover-text span:hover:nth-child(even) {
+    font-family: 'Times New Roman', Times, serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--text-secondary);
+    transform: scale(1.1) translateY(-10px);
+}
+
+.hover-text span:hover:nth-child(odd) {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    transform: scale(0.9) rotate(-5deg);
+}
+
+.hover-text span:hover:nth-child(3n) {
+    font-family: 'Impact', Charcoal, sans-serif;
+    letter-spacing: 5px;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--text-primary);
+    transform: scale(1.15);
+}
+
+.hover-text span:hover:nth-child(5n) {
+    font-family: 'Brush Script MT', cursive;
+    text-transform: lowercase;
+    font-size: 1.2em;
+    transform: translateY(5px);
+}
+
+.footer-tagline {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+}
+
+/* --- Desktop Scroll Animation --- */
+.footer-hero .hover-text,
+.footer-hero .footer-tagline {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.215, 0.61, 0.355, 1),
+                transform 0.8s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.footer-hero.is-visible .hover-text,
+.footer-hero.is-visible .footer-tagline {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.footer-hero.is-visible .footer-tagline {
+    transition-delay: 0.15s;
+}
+
+/* ===================================
+   Back to Top
+   =================================== */
+.back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    z-index: 99;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.back-to-top:hover {
+    background: var(--text-primary);
+    border-color: var(--text-primary);
+}
+
+.back-to-top svg {
+    width: 18px;
+    height: 18px;
+    color: var(--text-secondary);
+    transition: color 0.2s;
+}
+
+.back-to-top:hover svg {
+    color: var(--bg-primary);
+}
+
+/* ===================================
+   Responsive Mobile Overrides
+   =================================== */
+@media (max-width: 768px) {
+    .footer { padding: 4rem 0 2rem 0 !important; }
+    .footer-container { gap: 3rem; }
+    .footer-content-grid { gap: 2.5rem; flex-direction: column; }
+    .back-to-top { bottom: 1.5rem; left: 1.5rem; width: 40px; height: 40px; }
+    
+    .footer-hero .hover-text,
+    .footer-hero .footer-tagline {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+}

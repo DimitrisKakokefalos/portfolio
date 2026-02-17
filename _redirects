@@ -1,0 +1,17 @@
+# Netlify Redirects
+# Clean URLs and routing
+
+# Clean URLs for pages
+/chat       /pages/chat.html      200
+/work       /pages/work.html      200
+/privacy    /pages/privacy.html   200
+/terms      /pages/terms.html     200
+
+# Projects clean URLs
+/project/dynaworks          /pages/projects/project-dynaworks.html          200
+/project/document-pipeline  /pages/projects/project-document-pipeline.html  200
+/project/email-agent        /pages/projects/project-email-agent.html        200
+/project/invoice            /pages/projects/project-invoice.html            200
+
+# Fallback 404
+/*          /index.html           404

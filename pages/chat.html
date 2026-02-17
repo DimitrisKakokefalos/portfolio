@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask DynaBot | Dimitris Kakokefalos</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../css/chat.css">
+    <link rel="stylesheet" href="../css/preloader.css">
+</head>
+<body>
+
+    <!--Preloader-->
+    <div class="preloader" id="preloader">
+        <div class="loader-container">
+            <div class="loader-line"></div>
+            <span class="loader-counter" id="loaderCounter">0</span>
+            <div class="loader-line"></div>
+        </div>
+    </div>
+
+    <nav class="nav">
+        <a href="../index.html" class="nav-logo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            <span>Back</span>
+        </a>
+    </nav>
+
+    <div class="chat-layout">
+        <div class="chat-container">
+            
+            <!-- Welcome Screen (hides after first message) -->
+            <div class="chat-start-screen" id="startScreen">
+                <h1 class="chat-title">
+                    <span class="wave-emoji">👋</span> 
+                    <span>I'm DynaBot — Dimitris's portfolio assistant.</span>
+                </h1>
+                <h2 class="chat-subtitle">Ask me anything about his work, skills, or vision.</h2>
+            </div>
+
+            <!-- Chat Messages -->
+            <div class="chat-history" id="chatHistory"></div>
+
+        </div>
+
+        <!-- Input Area with Persistent Chips -->
+        <div class="chat-input-wrapper">
+            <div class="chat-input-container">
+                
+                <!-- Persistent Suggestion Chips - Always Visible -->
+                <div class="chat-suggestions" id="chatSuggestions">
+                    <button class="chip" onclick="sendSuggestion('About Dimitris')">
+                        <span class="chip-icon">👤</span> <span>About</span>
+                    </button>
+                    <button class="chip" onclick="sendSuggestion('Projects')">
+                        <span class="chip-icon">🚀</span> <span>Projects</span>
+                    </button>
+                    <button class="chip" onclick="sendSuggestion('Skills')">
+                        <span class="chip-icon">⚡</span> <span>Skills</span>
+                    </button>
+                    <button class="chip" onclick="sendSuggestion('Education')">
+                        <span class="chip-icon">🎓</span> <span>Education</span>
+                    </button>
+                    <button class="chip" onclick="sendSuggestion('DynaWorks')">
+                        <span class="chip-icon">💼</span> <span>DynaWorks</span>
+                    </button>
+                    <button class="chip" onclick="sendSuggestion('Contact')">
+                        <span class="chip-icon">📧</span> <span>Contact</span>
+                    </button>
+                </div>
+                
+                <!-- Input Field -->
+                <div class="input-box">
+                    <input 
+                        type="text" 
+                        id="chatInput" 
+                        placeholder="Ask about Dimitris..."
+                        autocomplete="off"
+                    >
+                    <button class="input-send" id="sendBtn" aria-label="Send message">
+                        <span class="send-text">Send</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/chat.js"></script>
+    <script src="../js/preloader.js"></script>
+</body>
+</html>

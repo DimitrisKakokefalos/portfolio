@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Ingestion Pipeline | Dimitris Kakokefalos</title>
+    
+    <link rel="icon" type="image/svg+xml" href="../../assets/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Preloader CSS -->
+    <style>
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        .preloader.finished {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .loader-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            width: 100%;
+            max-width: 800px;
+            padding: 0 2rem;
+        }
+        .loader-counter {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1;
+            min-width: 120px;
+            text-align: center;
+            font-feature-settings: "tnum";
+        }
+        .loader-line {
+            flex: 1;
+            height: 1px;
+            background: #888;
+            opacity: 0.3;
+            transform-origin: center;
+            animation: expandLine 1.5s ease-out forwards;
+        }
+        @keyframes expandLine {
+            from { transform: scaleX(0); opacity: 0; }
+            to { transform: scaleX(1); opacity: 0.9; }
+        }
+        body.loading { overflow: hidden; }
+    </style>
+    
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --bg-secondary: #111;
+            --bg-tertiary: #1a1a1a;
+            --text: #ffffff;
+            --text-secondary: #999;
+            --text-muted: #555;
+            --border: rgba(255,255,255,0.1);
+            --accent: #fff;
+            --font: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            cursor: crosshair;
+        }
+        a { text-decoration: none; color: inherit; }
+
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(10,10,10,0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-logo { font-weight: 600; font-size: 0.95rem; }
+        .nav-back {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .nav-back:hover { color: var(--text); }
+        .nav-back svg { width: 18px; height: 18px; }
+
+        .project-hero {
+            padding: 10rem 3rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .project-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .project-number {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+        .project-category {
+            padding: 0.4rem 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        .project-title {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+        .project-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            line-height: 1.7;
+        }
+
+        .project-main-image {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+        }
+        .project-main-image img {
+            width: 100%;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .project-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 3rem;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 4rem;
+        }
+        .project-main h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+        .project-main p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+        .project-main ul {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            padding-left: 1.5rem;
+        }
+        .project-main li {
+            margin-bottom: 0.75rem;
+            line-height: 1.7;
+        }
+
+        .project-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+        .sidebar-section h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .tech-tag {
+            padding: 0.5rem 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+        .tech-tag:hover {
+            border-color: var(--text-muted);
+            color: var(--text);
+        }
+        .project-year, .project-role, .project-client {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .screenshots-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 3rem 5rem;
+        }
+        .screenshots-section h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
+        }
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+        .screenshot {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: var(--bg-secondary);
+            transition: transform 0.3s ease, border-color 0.3s;
+        }
+        .screenshot:hover {
+            transform: translateY(-4px);
+            border-color: var(--text-muted);
+        }
+        .screenshot img {
+            width: 100%;
+            display: block;
+        }
+        .screenshot-caption {
+            padding: 1rem 1.25rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            background: var(--bg-tertiary);
+            border-top: 1px solid var(--border);
+        }
+
+        .next-project {
+            border-top: 1px solid var(--border);
+            padding: 4rem 3rem;
+            text-align: center;
+        }
+        .next-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+        .next-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            transition: opacity 0.2s;
+        }
+        .next-title:hover { opacity: 0.7; }
+
+        .page-footer {
+            padding: 2rem 3rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+        .page-footer p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s ease forwards;
+        }
+        .fade-in:nth-child(1) { animation-delay: 0.1s; }
+        .fade-in:nth-child(2) { animation-delay: 0.2s; }
+        .fade-in:nth-child(3) { animation-delay: 0.3s; }
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 900px) {
+            .nav { padding: 1rem 1.5rem; }
+            .project-hero { padding: 8rem 1.5rem 3rem; }
+            .project-title { font-size: 2.2rem; }
+            .project-subtitle { font-size: 1rem; }
+            .project-main-image { padding: 0 1.5rem; }
+            .project-content {
+                grid-template-columns: 1fr;
+                padding: 3rem 1.5rem;
+                gap: 3rem;
+            }
+            .project-sidebar {
+                order: -1;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 2rem;
+            }
+            .sidebar-section { flex: 1; min-width: 140px; }
+            .screenshots-section { padding: 2rem 1.5rem 4rem; }
+            .screenshots-grid { grid-template-columns: 1fr; }
+            .next-project { padding: 3rem 1.5rem; }
+            .next-title { font-size: 1.5rem; }
+        }
+        a { color: var(--accent); }
+        /* Κρατάει τον σταυρό ακόμα και όταν το ποντίκι είναι πάνω από links/buttons */
+        a, button, .btn, .project-card, .hover-text span {
+        cursor: crosshair !important;
+}
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="loader-container">
+            <div class="loader-line"></div>
+            <span class="loader-counter" id="loaderCounter">0</span>
+            <div class="loader-line"></div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <a href="../../index.html" class="nav-logo">Dimitris Kakokefalos</a>
+        <a href="../work.html" class="nav-back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            <span>All Projects</span>
+        </a>
+    </nav>
+
+    <!-- Hero -->
+    <header class="project-hero">
+        <div class="project-meta fade-in">
+            <span class="project-number">PROJECT 02</span>
+            <span class="project-category">AI Automation</span>
+        </div>
+        <h1 class="project-title fade-in">Document Ingestion Pipeline</h1>
+        <p class="project-subtitle fade-in">Automated document ingestion system with AI classification, type-specific data extraction, and confidence-based routing with human-in-the-loop review.</p>
+    </header>
+
+    <!-- Main Image -->
+    <div class="project-main-image fade-in">
+        <img src="../../assets/pictures/Document Ingestion Pipeline.png" alt="Document Ingestion Pipeline">
+    </div>
+
+    <!-- Content -->
+    <section class="project-content">
+        <div class="project-main">
+            <h2>About the Project</h2>
+            <p>This project automates the entire document processing workflow for a client dealing with high volumes of varied document types. The system intelligently classifies incoming documents, extracts relevant data based on document type, and routes them through appropriate workflows.</p>
+            
+            <p>Key features of the pipeline:</p>
+            <ul>
+                <li>AI-powered document classification using GroqAI for fast inference</li>
+                <li>Type-specific data extraction templates for invoices, contracts, receipts, etc.</li>
+                <li>Confidence scoring with automatic routing to human review when needed</li>
+                <li>Supabase integration for structured data storage and retrieval</li>
+                <li>Real-time notifications and status tracking</li>
+                <li>Audit trail for compliance and debugging</li>
+            </ul>
+
+            <h2>The Challenge</h2>
+            <p>The client was spending hours manually sorting, reading, and entering data from hundreds of documents daily. Different document types required different handling, and errors were common due to fatigue and volume. The solution needed to be accurate enough to handle most documents automatically while flagging uncertain cases for human review.</p>
+
+            <h2>Results</h2>
+            <p>The pipeline now processes 90% of documents fully automatically with 98% accuracy. Human review is only needed for edge cases, reducing manual processing time by over 85%. The client can now focus on exceptions rather than routine data entry.</p>
+        </div>
+
+        <aside class="project-sidebar">
+            <div class="sidebar-section">
+                <h3>Tech Stack</h3>
+                <div class="tech-stack">
+                    <span class="tech-tag">n8n</span>
+                    <span class="tech-tag">GroqAI</span>
+                    <span class="tech-tag">Supabase</span>
+                    <span class="tech-tag">PostgreSQL</span>
+                    <span class="tech-tag">REST APIs</span>
+                    <span class="tech-tag">Webhooks</span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Year</h3>
+                <p class="project-year">2024</p>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Role</h3>
+                <p class="project-role">Automation Engineer</p>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Client</h3>
+                <p class="project-client">Private Client</p>
+            </div>
+        </aside>
+    </section>
+
+    <!-- Screenshots -->
+    <section class="screenshots-section">
+        <h2>Screenshots</h2>
+        <div class="screenshots-grid">
+            <div class="screenshot">
+                <img src="../../assets/pictures/idp.png" alt="Pipeline Overview">
+                <div class="screenshot-caption">Main n8n workflow showing the document processing pipeline</div>
+            </div>
+            <div class="screenshot">
+                <img src="../../assets/pictures/ai_classificier.png" alt="Classification">
+                <div class="screenshot-caption">AI classification node with confidence scoring</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Next Project -->
+    <section class="next-project">
+        <p class="next-label">Next Project</p>
+        <a href="project-email-agent.html">
+            <h3 class="next-title">Personal AI Email Agent →</h3>
+        </a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+        <p>© 2025 Dimitris Kakokefalos</p>
+    </footer>
+
+    <!-- Preloader Script -->
+    <script src="../../js/preloader.js"></script>
+</body>
+</html>

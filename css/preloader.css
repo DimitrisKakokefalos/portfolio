@@ -1,0 +1,69 @@
+/* ===================================
+   Minimal Center Preloader
+   =================================== */
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-primary); /* #050505 */
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.preloader.finished {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.loader-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem; /* Απόσταση γραμμών από τον αριθμό */
+    width: 100%;
+    max-width: 800px; /* Μέγιστο πλάτος γραμμών */
+    padding: 0 2rem;
+}
+
+.loader-counter {
+    font-family: var(--font-main); /* Inter ή Syne αν προτιμάς */
+    font-size: clamp(3rem, 6vw, 5rem); /* Μεγάλο μέγεθος */
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+    min-width: 120px; /* Σταθερό πλάτος για να μην "χορεύουν" οι γραμμές */
+    text-align: center;
+    font-feature-settings: "tnum"; /* Tabular numbers για σταθερότητα */
+}
+
+.loader-line {
+    flex: 1; /* Πιάνει τον υπόλοιπο χώρο */
+    height: 1px;
+    background: var(--text-secondary); /* Γκρι γραμμή */
+    opacity: 0.3;
+    transform-origin: center;
+    animation: expandLine 1.5s ease-out forwards;
+}
+
+/* Animation για τις γραμμές (προαιρετικό, αν θες να ανοίγουν) */
+@keyframes expandLine {
+    from { transform: scaleX(0); opacity: 0; }
+    to { transform: scaleX(1); opacity: 0.9; }
+}
+
+/* Κλείδωμα scroll */
+body.loading {
+    overflow: hidden;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .loader-container { gap: 1rem; }
+    .loader-counter { min-width: 80px; }
+}

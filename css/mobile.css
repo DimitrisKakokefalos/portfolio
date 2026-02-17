@@ -1,0 +1,191 @@
+/* ===================================
+   Mobile & Tablet Responsive Styles
+   =================================== */
+
+@media (max-width: 1024px) {
+    .hero-wrapper {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 4rem;
+    }
+    .hero-visual { order: 1; }
+    .hero-content { order: 2; margin: 0 auto; max-width: 100%; }
+    .hero-description { margin-left: auto; margin-right: auto; }
+    .hero-cta { justify-content: center; }
+    .hero-badge { margin-left: auto; margin-right: auto; }
+    .swiss-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .swiss-grid-about { grid-template-columns: 1fr; }
+    .bio-text p { max-width: 100%; }
+}
+
+@media (max-width: 768px) {
+    /* ===================================
+       Navigation & Mobile Menu
+       =================================== */
+    .nav-links { display: none; }
+    .nav-actions { display: none; } /* Κρύβουμε και το κενό div στο κινητό */
+    
+    .nav {
+        padding: 1rem 1.5rem;
+        z-index: 1001; 
+        display: flex; /* Αλλάζουμε το grid σε flex στο κινητό */
+        justify-content: space-between;
+    }
+
+    /* Mobile Menu Toggle Button */
+    .mobile-toggle {
+        display: flex; /* Το επαναφέρουμε σε flex για να φαίνεται στο κινητό! */
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-end; 
+        gap: 6px;
+        width: 30px;
+        height: 30px;
+        background: transparent;
+        border: none;
+        cursor: crosshair !important;
+        z-index: 1002; 
+    }
+
+    .mobile-toggle .line {
+        height: 2px;
+        background: var(--text-primary);
+        border-radius: 2px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: block; /* Απαραίτητο για τα spans */
+    }
+
+    .mobile-toggle .line-1 { width: 100%; transform: none; }
+    .mobile-toggle .line-2 { width: 60%; transform: none; }
+
+    .mobile-toggle.is-active .line-1 { transform: translateY(4px) rotate(45deg); }
+    .mobile-toggle.is-active .line-2 { width: 100%; transform: translateY(-4px) rotate(-45deg); }
+
+    /* Full-Screen Overlay Background */
+    .mobile-menu {
+        display: flex; /* Το κάνουμε flex, αλλά το κρύβουμε με opacity/visibility */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        height: 100dvh; 
+        background: var(--bg-primary);
+        z-index: 1000;
+        flex-direction: column;
+        justify-content: center;
+        padding: 2rem;
+        opacity: 0;
+        visibility: hidden;
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); 
+        transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+
+    .mobile-menu.is-active {
+        opacity: 1;
+        visibility: visible;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+
+    .mobile-menu-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    /* Mobile Links */
+    .mobile-link {
+        font-family: var(--font-main);
+        font-size: clamp(2.5rem, 10vw, 4rem);
+        font-weight: 700;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: -1px;
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        transition: color 0.3s ease;
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    .mobile-link span {
+        font-family: var(--font-mono);
+        font-size: 1rem;
+        font-weight: 400;
+        color: var(--text-muted);
+        margin-top: 0.5rem;
+    }
+
+    .mobile-link:hover, .mobile-link:active { color: var(--text-primary); }
+
+    .mobile-menu.is-active .mobile-link {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+
+    .mobile-menu.is-active .mobile-link:nth-child(1) { transition-delay: 0.2s; }
+    .mobile-menu.is-active .mobile-link:nth-child(2) { transition-delay: 0.3s; }
+    .mobile-menu.is-active .mobile-link:nth-child(3) { transition-delay: 0.4s; }
+
+    .mobile-menu-footer {
+        margin-top: 4rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border-color);
+        font-family: var(--font-mono);
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    .mobile-menu.is-active .mobile-menu-footer {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 0.4s ease 0.5s, transform 0.4s ease 0.5s;
+    }
+
+    .mobile-menu-footer a { color: var(--text-secondary); }
+
+    /* General Mobile Styles */
+    .hero-title { font-size: 2.5rem; }
+    .section-header h2 { font-size: 2rem; }
+    .swiss-heading { font-size: 1.25rem; }
+    .hero { padding: 5rem 1.5rem; }
+    .hero-description { font-size: 1rem; }
+    .hero-cta { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto; }
+    .btn { width: 100%; justify-content: center; padding: 1rem 1.5rem; }
+    .code-window { max-width: 100%; }
+    .code-content { font-size: 0.75rem; padding: 1rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    section { padding: 4rem 1.5rem; }
+    .section-header { flex-direction: column; align-items: flex-start; gap: 0.75rem; margin-bottom: 2.5rem; }
+    .project-card { border-radius: var(--radius-md); }
+    .scroll-indicator { bottom: 2rem; }
+    .contact-float { bottom: 1.5rem; right: 1.5rem; }
+    .contact-popup { width: calc(100vw - 3rem); right: -0.5rem; }
+}
+
+@media (max-width: 480px) {
+    .nav { padding: 1rem; }
+    .nav-logo { font-size: 0.95rem; }
+    .hero-title { font-size: 2rem; }
+    .hero-badge { font-size: 0.75rem; padding: 0.4rem 0.8rem 0.4rem 0.4rem; }
+    .project-info { padding: 1.25rem; }
+    .project-info h3 { font-size: 1.1rem; }
+    .swiss-list li { font-size: 0.95rem; padding: 0.5rem 0; }
+    .contact-float-btn { width: 52px; height: 52px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    .shape { display: none; }
+}

@@ -1,0 +1,22 @@
+# Robots.txt for dimitriskakokefalos.com
+# https://www.robotstxt.org/
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://dimitriskakokefalos.com/sitemap.xml
+
+# Block crawlers from non-public areas
+Disallow: /assets/private/
+Disallow: /*.pdf$
+
+# Allow all major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /

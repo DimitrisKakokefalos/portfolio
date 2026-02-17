@@ -1,0 +1,19 @@
+/* TEAM */
+Developer: Dimitris Kakokefalos
+Site: https://dimitriskakokefalos.com
+Location: Athens, Greece
+Contact: dimitriskakokefalos@gmail.com
+LinkedIn: linkedin.com/in/dimitris-kakokefalos-0626a729a
+GitHub: github.com/DimitrisKakokefalos
+
+/* SITE */
+Last update: 2026/02/17
+Language: English / Greek
+Standards: HTML5, CSS3, JavaScript ES6+
+Components: Plus Jakarta Sans, JetBrains Mono
+Software: VS Code, Git, Netlify
+
+/* THANKS */
+Fonts: Google Fonts
+Hosting: Netlify
+Icons: Custom SVG
