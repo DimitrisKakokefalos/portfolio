@@ -3,8 +3,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const consentKey = 'cookieConsent';
     const container = document.getElementById(bannerId);
 
-    if (!container) return;
-    if (localStorage.getItem(consentKey)) return;
+    // GA4 Measurement ID
+    const GA_MEASUREMENT_ID = 'G-KPWS246MNM';
+
+    // Load GA4 if already consented
+    if (localStorage.getItem(consentKey) === 'true') {
+        loadGA4();
+    }
+
+    // Don't show banner if already responded
+    if (!container || localStorage.getItem(consentKey)) return;
 
     // Check if mobile
     const isMobile = window.innerWidth <= 768;
@@ -79,11 +87,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('acceptCookies').addEventListener('click', () => {
         localStorage.setItem(consentKey, 'true');
         container.innerHTML = '';
+        loadGA4(); // Load analytics after consent
     });
 
     document.getElementById('declineCookies').addEventListener('click', () => {
         localStorage.setItem(consentKey, 'false');
         container.innerHTML = '';
+        // Don't load GA4
     });
 
     // Hover effects
@@ -98,5 +108,31 @@ document.addEventListener('DOMContentLoaded', () => {
     if (declineBtn) {
         declineBtn.addEventListener('mouseenter', () => declineBtn.style.borderColor = '#fff');
         declineBtn.addEventListener('mouseleave', () => declineBtn.style.borderColor = 'rgba(255,255,255,0.15)');
+    }
+
+    // GA4 Loader Function
+    function loadGA4() {
+        // Don't load twice
+        if (window.gaLoaded) return;
+        window.gaLoaded = true;
+
+        // Load gtag.js script
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+        document.head.appendChild(script);
+
+        // Initialize gtag
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        window.gtag = gtag;
+        
+        gtag('js', new Date());
+        gtag('config', GA_MEASUREMENT_ID, {
+            'anonymize_ip': true,
+            'cookie_flags': 'SameSite=None;Secure'
+        });
+
+        console.log('GA4 loaded successfully');
     }
 });
